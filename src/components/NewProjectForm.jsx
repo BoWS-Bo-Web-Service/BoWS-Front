@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 
-const AppDeploymentForm = ()=> {
+const NewProjectForm = ()=> {
     const [formData, setFormData] = useState({
         projectName: '',
         domain: '',
@@ -97,4 +97,4 @@ const AppDeploymentForm = ()=> {
     )
 };
 
-export default AppDeploymentForm;
+export default NewProjectForm;
