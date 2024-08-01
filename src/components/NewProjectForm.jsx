@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
+import {SERVER_URL} from '../constants/network.js'
 
 const NewProjectForm = ()=> {
     const [formData, setFormData] = useState({
@@ -35,32 +36,31 @@ const NewProjectForm = ()=> {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://bows.co.kr:8080/api/create', formData, {
+            const response = await axios.post(`${SERVER_URL}/api/projects`, formData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            alert(response.data.message);
+            alert("프로젝트 생성 성공");
+            window.location.href=`/projects/${response.data}`;
         } catch (error) {
             console.error('Error:', error);
-            alert('애플리케이션 배포에 실패했습니다');
+            alert('프로젝트 생성에 실패했습니다' + error.data.message);
         }
     };
 
-    // const handleDestroy = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await axios.get('http://bows.co.kr:8080/api/destroy', {
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         });
-    //         alert(response.data.message);
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //         alert('애플리케이션 삭제에 실패했습니다');
-    //     }
-    // }
+    const handleCancel = () => {
+        setFormData({
+            projectName: '',
+            domain: '',
+            backendImageName: '',
+            frontendImageName: '',
+            dbPassword: '',
+            dbEndpoint: '',
+            dbUserName: '',
+            dbUserPassword: ''
+        });
+    }
 
     return (
         <div className="flex flex-col w-full h-[60%]">
@@ -85,11 +85,14 @@ const NewProjectForm = ()=> {
             </div>
             <div className="flex gap-2 justify-end">
                 <Link to="/">
-                    <button className="w-[140px] h-[40px] text-gray-700 hover:opacity-[80%] rounded-xl">
+                    <button className="w-[140px] h-[40px] text-gray-700 hover:opacity-[80%] rounded-xl"
+                            onClick={handleCancel}>
                         x 작성 취소
                     </button>
                 </Link>
-                <button type="submit" className="w-[140px] h-[40px] border bg-[#007AFF] hover:opacity-[80%] rounded-xl text-white" onClick={handleSubmit}>
+                <button type="submit"
+                        className="w-[140px] h-[40px] border bg-[#007AFF] hover:opacity-[80%] rounded-xl text-white"
+                        onClick={handleSubmit}>
                     배포하기
                 </button>
             </div>

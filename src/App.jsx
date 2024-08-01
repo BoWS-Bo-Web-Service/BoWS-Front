@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Main from "./routes/Main.jsx";
 import NewProject from "./routes/NewProject.jsx";
+import ProjectDetail from "./routes/ProjectDetail.jsx";
 
 function App() {
     return (
@@ -8,7 +9,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/project" element={<NewProject />} />
+                    <Route path="/projects" element={<NewProject />} />
+                    <Route path="/projects/:projectId" element={<ProjectDetail />} />
                 </Routes>
             </BrowserRouter>
         </div>
