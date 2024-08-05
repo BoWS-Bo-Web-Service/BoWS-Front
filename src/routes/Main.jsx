@@ -1,4 +1,4 @@
-import Header from "../components/Header.jsx";
+import Header from "../components/common/Header.jsx";
 import ProjectList from "../components/projectList/ProjectList.jsx";
 import {Link} from "react-router-dom";
 

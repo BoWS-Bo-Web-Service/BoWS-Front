@@ -1,4 +1,4 @@
-import Header from "../components/Header.jsx";
+import Header from "../components/common/Header.jsx";
 import ServiceList from "../components/projectDetail/ServiceList.jsx";
 
 function Main() {

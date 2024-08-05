@@ -1,5 +1,5 @@
-import Header from "../components/Header.jsx";
-import NewProjectForm from "../components/NewProjectForm.jsx";
+import Header from "../components/common/Header.jsx";
+import NewProjectForm from "../components/newProject/NewProjectForm.jsx";
 
 function NewProject() {
     return (
