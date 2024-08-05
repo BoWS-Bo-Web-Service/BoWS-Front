@@ -3,7 +3,7 @@ import ServiceItem from "./ServiceItem.jsx";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClock, faGlobe} from "@fortawesome/free-solid-svg-icons";
+import {faClock, faGlobe, faRedo} from "@fortawesome/free-solid-svg-icons";
 import {calculateAge} from "../../utils/dateUtils.js";
 import {SERVER_URL} from '../../constants/network.js'
 
@@ -34,6 +34,10 @@ const ServiceList = () => {
         fetchServices();
     }, []);
 
+    const handleRefresh = () => {
+        window.location.reload();
+    };
+
     return (
         <div className="flex flex-col">
             <div className="flex flex-col w-full mb-10">
@@ -49,11 +53,14 @@ const ServiceList = () => {
                         <FontAwesomeIcon icon={faClock}/>
                         {projectAge}
                     </div>
+                    <div className="flex ml-auto gap-2 items-center cursor-pointer" onClick={handleRefresh}>
+                        <FontAwesomeIcon icon={faRedo}/>
+                        서비스 상태 새로고침
+                    </div>
                 </div>
             </div>
             <div className="rounded-lg w-[1280px] border border-gray-300">
-                <div
-                    className="h-[65px] border-b border-gray-300 rounded-t-lg serviceList-grid items-center bg-white">
+                <div className="h-[65px] border-b border-gray-300 rounded-t-lg serviceList-grid items-center bg-white">
                     <div className="flex justify-center items-center h-full"></div>
                     <div className="serviceList-grid-index-text-box">서비스 이름</div>
                     <div className="serviceList-grid-index-text-box">External-IP</div>

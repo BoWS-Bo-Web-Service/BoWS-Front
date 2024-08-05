@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
-import {SERVER_URL} from '../constants/network.js'
+import {SERVER_URL} from '../../constants/network.js'
+import LoadingSpinner from "../common/LoadingSpinner.jsx";
 
 const NewProjectForm = ()=> {
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         projectName: '',
         domain: '',
@@ -35,6 +37,7 @@ const NewProjectForm = ()=> {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const response = await axios.post(`${SERVER_URL}/api/projects`, formData, {
                 headers: {
@@ -46,6 +49,8 @@ const NewProjectForm = ()=> {
         } catch (error) {
             console.error('Error:', error);
             alert('프로젝트 생성에 실패했습니다' + error.data.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -64,6 +69,7 @@ const NewProjectForm = ()=> {
 
     return (
         <div className="flex flex-col w-full h-[60%]">
+            <LoadingSpinner loading={isLoading} message={"프로젝트 빌드 중..."} />
             <div className="items-center flex-1 justify-center" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-2">
                     {Object.keys(formData).map((key, index) => (
