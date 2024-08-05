@@ -5,7 +5,7 @@ import ProjectDetail from "./routes/ProjectDetail.jsx";
 
 function App() {
     return (
-        <div className="w-screen h-screen bg-[FEFEFE] flex justify-center">
+        <div className="w-screen bg-[FEFEFE] flex justify-center">
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />} />

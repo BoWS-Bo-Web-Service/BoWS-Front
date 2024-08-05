@@ -52,15 +52,18 @@ const ServiceList = () => {
                 </div>
             </div>
             <div className="rounded-lg w-[1280px] border border-gray-300">
-                <div className="h-[65px] border-b border-gray-300 rounded-t-lg flex items-center bg-white">
-                    <div className="flex flex-1 justify-center text-gray-700 text-sm text font-semibold">서비스 이름</div>
-                    <div className="flex flex-1 justify-center text-gray-700 text-sm text font-semibold">External-IP</div>
-                    <div className="flex flex-1 justify-center text-gray-700 text-sm text font-semibold">포트</div>
-                    <div className="flex flex-1 justify-center text-gray-700 text-sm text font-semibold">시작 시간</div>
+                <div
+                    className="h-[65px] border-b border-gray-300 rounded-t-lg serviceList-grid items-center bg-white">
+                    <div className="flex justify-center items-center h-full"></div>
+                    <div className="serviceList-grid-index-text-box">서비스 이름</div>
+                    <div className="serviceList-grid-index-text-box">External-IP</div>
+                    <div className="serviceList-grid-index-text-box">포트</div>
+                    <div className="serviceList-grid-index-text-box">시작 시간</div>
+                    <div className="flex justify-center items-center h-full"></div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
-                    {serviceMetadata.map((project, index) => (
-                        <ServiceItem key={index} isLast={index === serviceMetadata.length - 1} {...project} />
+                    {serviceMetadata.map((service, index) => (
+                        <ServiceItem key={index} isLast={index === serviceMetadata.length - 1} service={service}/>
                     ))}
                 </div>
             </div>

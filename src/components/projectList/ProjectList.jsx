@@ -40,7 +40,7 @@ const ProjectList = () => {
                     {numOfProjects}개 프로젝트 실행 중
                 </div>
             </div>
-            <div className="pl-4 bg-white rounded-lg shadow-sm divide-y divide-gray-200">
+            <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
                 {numOfProjects === 0 ? handleNoProject() : projects.map((project, index) => (
                     <ProjectItem key={index} isLast={index === projects.length - 1} {...project} />
                 ))}

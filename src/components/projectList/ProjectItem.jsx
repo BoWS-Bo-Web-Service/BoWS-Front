@@ -29,7 +29,7 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
     };
 
     return (
-        <div className={`h-[90px] w-full flex items-center justify-between bg-white p-4 border-gray-300 hover:cursor-pointer
+        <div className={`h-[90px] w-full flex items-center justify-between bg-white pl-8 border-gray-300 hover:cursor-pointer
         ${isLast ? 'rounded-b-lg border-b-0' : ''}`}>
             <div className="flex items-center" onClick={() => navigate(`/projects/${projectId}`)}>
                 <div className="text-gray-900 text-xl">{projectName}</div>
@@ -45,12 +45,9 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
                 </div>
             </div>
             <div className="flex gap-5 space-x-2">
-                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700">
-                    <img alt="edit icon" src={edit_icon}/> 편집
-                </button>
-                <button className="flex items-center gap-2 text-red-500 hover:text-red-700"
+                <button className="flex items-center gap-2 mr-10 text-red-500 hover:text-red-700"
                         onClick={handleProjectDelete}>
-                    <img alt="trash bin icon" src={trash_bin_icon}/> 삭제
+                    <img alt="trash bin icon" src={trash_bin_icon}/> 프로젝트 삭제
                 </button>
             </div>
         </div>
