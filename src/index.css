@@ -8,3 +8,15 @@
 body {
   font-family: "Noto Sans KR";
 }
+
+.service-item-grid-box {
+  @apply flex justify-center items-center px-2 overflow-hidden text-ellipsis whitespace-nowrap text-gray-500 text-sm h-full;
+}
+
+.serviceList-grid {
+  @apply grid grid-cols-[60px_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_60px];
+}
+
+.serviceList-grid-index-text-box {
+  @apply flex justify-center text-gray-700 text-sm font-semibold;
+}
