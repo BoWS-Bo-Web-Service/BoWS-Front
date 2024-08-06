@@ -14,8 +14,10 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
     const projectAge = calculateAge(projectCreatedTime);
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     const handleProjectDelete = async () => {
+        setShowConfirmDialog(false);
         setIsDeleting(true);
         try {
             const response = await axios.delete(`${SERVER_URL}/api/projects/${projectId}`, {
@@ -33,10 +35,29 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
         }
     };
 
+    const ConfirmDialog = () => (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg flex flex-col gap-2">
+                <p className="flex mb-4">정말로 프로젝트를 삭제하시겠습니까?</p>
+                <div className="flex justify-end">
+                    <button className="px-4 py-1 text-gray-800 rounded mr-2"
+                            onClick={() => setShowConfirmDialog(false)}>
+                        x 취소
+                    </button>
+                    <button className="px-4 py-1 bg-red-500 text-white rounded"
+                            onClick={handleProjectDelete}>
+                        삭제
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <div className={`h-[90px] w-full flex items-center justify-between bg-white pl-8 border-gray-300 hover:cursor-pointer
         ${isLast ? 'rounded-b-lg border-b-0' : ''}`}>
-            <LoadingSpinner loading={isDeleting} message={"프로젝트 삭제 중..."} />
+            {showConfirmDialog && <ConfirmDialog />}
+            {isDeleting && <LoadingSpinner loading={isDeleting} message={"프로젝트 삭제 중..."} />}
             <div className="flex items-center" onClick={() => navigate(`/projects/${projectId}`)}>
                 <div className="text-gray-900 text-xl">{projectName}</div>
                 <div className="text-gray-500 text-sm flex ml-10">
@@ -52,7 +73,7 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
             </div>
             <div className="flex gap-5 space-x-2">
                 <button className="flex items-center gap-2 mr-10 text-red-500 hover:text-red-700"
-                        onClick={handleProjectDelete}>
+                        onClick={() => setShowConfirmDialog(true)}>
                     <img alt="trash bin icon" src={trash_bin_icon}/> 프로젝트 삭제
                 </button>
             </div>
