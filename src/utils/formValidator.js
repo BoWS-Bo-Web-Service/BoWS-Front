@@ -39,6 +39,10 @@ const FormValidator = {
             }
         });
 
+        if (![1, 2, 3].includes(Number(formData.dbStorageSize))) {
+            errors.dbStorageSize = "DB 스토리지 크기는 1, 2, 3 GB 중 하나여야 합니다.";
+        }
+
         return errors;
     }
 };

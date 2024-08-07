@@ -16,7 +16,8 @@ const NewProjectForm = ()=> {
         dbPassword: '',
         dbEndpoint: '',
         dbUserName: '',
-        dbUserPassword: ''
+        dbUserPassword: '',
+        dbStorageSize: 1
     });
 
     const fieldLabels = {
@@ -27,7 +28,8 @@ const NewProjectForm = ()=> {
         dbPassword: '데이터베이스 비밀번호',
         dbEndpoint: '데이터베이스 엔드포인트',
         dbUserName: '데이터베이스 사용자 이름',
-        dbUserPassword: '데이터베이스 사용자 비밀번호'
+        dbUserPassword: '데이터베이스 사용자 비밀번호',
+        dbStorageSize: 'DB 스토리지 크기 (1-3GB, 숫자만 적어주세요)'
     };
 
     const handleChange = (e) => {
@@ -71,7 +73,8 @@ const NewProjectForm = ()=> {
             dbPassword: '',
             dbEndpoint: '',
             dbUserName: '',
-            dbUserPassword: ''
+            dbUserPassword: '',
+            dbStorageSize: 1,
         });
         setErrors({});
     }
