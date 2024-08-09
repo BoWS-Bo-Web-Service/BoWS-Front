@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom";
-import {SERVER_URL} from '../../constants/network.js'
+import { Link } from "react-router-dom";
+import { SERVER_URL } from '../../constants/network.js'
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 import FormValidator from "../../utils/formValidator.js";
+import FileUploader from './FileUploader';
 
 const NewProjectForm = ()=> {
     const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +20,7 @@ const NewProjectForm = ()=> {
         dbUserPassword: '',
         dbStorageSize: 1
     });
+    const [file, setFile] = useState(null);
 
     const fieldLabels = {
         projectName: '프로젝트 이름 (영어 소문자, 숫자, - . _만 사용 가능합니다)',
@@ -38,9 +40,24 @@ const NewProjectForm = ()=> {
         setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
+    const handleFileChange = (selectedFile) => {
+        if (selectedFile && selectedFile.name.endsWith('.sql')) {
+            setFile(selectedFile);
+            setErrors(prev => ({ ...prev, file: '' }));
+        } else {
+            setFile(null);
+            setErrors(prev => ({ ...prev, file: '유효한 .sql 파일을 선택해주세요' }));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = FormValidator.validateForm(formData, fieldLabels);
+
+        if (!file) {
+            validationErrors.file = 'schema.sql 파일을 선택해주세요';
+        }
+
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
@@ -49,9 +66,17 @@ const NewProjectForm = ()=> {
 
         setIsLoading(true);
         try {
-            const response = await axios.post(`${SERVER_URL}/api/projects`, formData, {
+            const formDataToSend = new FormData();
+            for (const key in formData) {
+                formDataToSend.append(key, formData[key]);
+            }
+            if (file) {
+                formDataToSend.append('dbSchemaFile', file);
+            }
+
+            const response = await axios.post(`${SERVER_URL}/api/projects`, formDataToSend, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             });
             alert("프로젝트 생성 성공");
@@ -76,6 +101,7 @@ const NewProjectForm = ()=> {
             dbUserPassword: '',
             dbStorageSize: 1,
         });
+        setFile(null);
         setErrors({});
     }
 
@@ -100,11 +126,12 @@ const NewProjectForm = ()=> {
                                 }`}
                             />
                             {errors[key] && (
-                                <p className="text-sm text-gray-500 mt-1">{errors[key]}</p>
+                                <p className="text-sm text-red-500 mt-1">{errors[key]}</p>
                             )}
                         </div>
                     ))}
                 </div>
+                <FileUploader onFileChange={handleFileChange} error={errors.file} />
                 <div className="flex gap-2 justify-end">
                     <Link to="/">
                         <button type="button" className="w-[140px] h-[40px] text-gray-700 hover:opacity-[80%] rounded-xl"
