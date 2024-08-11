@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { Check } from 'lucide-react';
 
 const FileUploader = ({ onFileChange, error }) => {
     const [isDragging, setIsDragging] = useState(false);
@@ -57,8 +58,9 @@ const FileUploader = ({ onFileChange, error }) => {
                     className="hidden"
                 />
                 {isUploaded ? (
-                    <p className="text-lg mb-2 text-green-600">
-                        ✅ 파일이 업로드 되었습니다: {fileName}
+                    <p className="text-lg mb-2 text-green-600 flex items-center justify-center">
+                        <Check className="text-green-500" size={20}/>
+                        <span className="ml-2">파일이 업로드 되었습니다: {fileName}</span>
                     </p>
                 ) : (
                     <div className="text-lg mb-2">
