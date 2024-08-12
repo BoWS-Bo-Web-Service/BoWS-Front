@@ -52,7 +52,7 @@ const NewProjectForm = ()=> {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationErrors = FormValidator.validateForm(formData, fieldLabels);
+        const validationErrors = FormValidator.validateForm(formData, 'project');
 
         if (!file) {
             validationErrors.file = 'schema.sql 파일을 선택해주세요';

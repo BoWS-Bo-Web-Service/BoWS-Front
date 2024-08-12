@@ -3,30 +3,40 @@ import { Check, X } from 'lucide-react';
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {SERVER_URL} from "../constants/network.js";
+import FormValidator from "../utils/formValidator.js";
 
 const RegisterForm = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [invitationCode, setInvitationCode] = useState('');
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+        confirmPassword: '',
+        invitationCode: ''
+    });
+    const [errors, setErrors] = useState({});
     const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+        if (name === 'username') {
+            setIsUsernameDuplicate(null);
+        }
+    };
+
     const checkDuplicateUsername = async () => {
         try {
-            const response = await axios.post(`${SERVER_URL}/api/members/check-username`
-                , {
-                    username: username,
-                    password: password,
-                    invitationCode: invitationCode,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-            let isDuplicate = response.data.message;
-            setIsUsernameDuplicate(isDuplicate);
+            const response = await axios.post(`${SERVER_URL}/api/members/check-username`, {
+                username: formData.username
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            setIsUsernameDuplicate(response.data.message);
         } catch (error) {
             console.error('Error:', error);
             alert('아이디 중복 검증 중 에러가 발생했습니다');
@@ -35,18 +45,26 @@ const RegisterForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate form
+        const validationErrors = FormValidator.validateForm(formData, 'register');
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0 || isUsernameDuplicate !== true) {
+            return;
+        }
+
+        setIsLoading(true);
         try {
-            const response = await axios.post(`${SERVER_URL}/api/members/register`
-                , {
-                    username: username,
-                    password: password,
-                    invitationCode: invitationCode,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
+            const response = await axios.post(`${SERVER_URL}/api/members/register`, {
+                username: formData.username,
+                password: formData.password,
+                invitationCode: formData.invitationCode
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
             alert("회원가입 성공");
             window.location.href = `/`;
         } catch (error) {
@@ -64,21 +82,17 @@ const RegisterForm = () => {
                     <div className="flex-grow relative">
                         <input
                             type="text"
+                            name="username"
                             placeholder="아이디"
-                            value={username}
-                            onChange={(e) => {
-                                setUsername(e.target.value);
-                                setIsUsernameDuplicate(null);
-                            }}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className={`w-full px-3 py-2 border ${errors.username ? 'border-red-500' : 'border-gray-300'} rounded-l-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                         />
                         {isUsernameDuplicate === true && (
-                            <Check className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500"
-                                   size={20}/>
+                            <Check className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500" size={20}/>
                         )}
                         {isUsernameDuplicate === false && (
-                            <X className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500"
-                               size={20}/>
+                            <X className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500" size={20}/>
                         )}
                     </div>
                     <button
@@ -89,38 +103,46 @@ const RegisterForm = () => {
                         중복확인
                     </button>
                 </div>
+                {errors.username && <p className="text-red-500 text-sm mt-1 mb-2">{errors.username}</p>}
                 <div className="mb-4">
                     <input
                         type="password"
+                        name="password"
                         placeholder="비밀번호"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
                 <div className="mb-4">
                     <input
                         type="password"
+                        name="confirmPassword"
                         placeholder="비밀번호 확인"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
                 </div>
                 <div className="mb-6">
                     <input
                         type="text"
+                        name="invitationCode"
                         placeholder="초대코드"
-                        value={invitationCode}
-                        onChange={(e) => setInvitationCode(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                        value={formData.invitationCode}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 border ${errors.invitationCode ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
+                    {errors.invitationCode && <p className="text-red-500 text-sm mt-1">{errors.invitationCode}</p>}
                 </div>
                 <button
                     type="submit"
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:opacity-80 transition duration-150"
+                    disabled={isLoading}
                 >
-                    회원가입하기
+                    {isLoading ? '회원가입 중...' : '회원가입하기'}
                 </button>
             </form>
             <Link to="/login">

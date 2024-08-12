@@ -5,20 +5,34 @@ import axios from "axios";
 import {SERVER_URL} from "../constants/network.js";
 
 const LoginForm = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+    const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = FormValidator.validateForm(formData, 'login');
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
         setIsLoading(true);
         try {
-            const response = await axios.post(`${SERVER_URL}/api/members/login`
-                , {
-                    username: username,
-                    password: password,
-                },
-                {
+            const response = await axios.post(`${SERVER_URL}/api/members/login`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
@@ -35,31 +49,35 @@ const LoginForm = () => {
 
     return (
         <div className="flex flex-col items-center w-full">
-            <form className="w-[300px]">
+            <form className="w-[300px]" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <input
                         type="text"
+                        name="username"
                         placeholder="아이디"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                        value={formData.username}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 border ${errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
+                    {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
                 </div>
                 <div className="mb-6">
                     <input
                         type="password"
+                        name="password"
                         placeholder="비밀번호"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
                 <button
                     type="submit"
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:opacity-80 transition duration-150"
-                    onClick={handleSubmit}
+                    disabled={isLoading}
                 >
-                    아이디로 로그인
+                    {isLoading ? '로그인 중...' : '아이디로 로그인'}
                 </button>
             </form>
 
