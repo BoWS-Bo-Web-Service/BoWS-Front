@@ -31,20 +31,26 @@ const LoginForm = () => {
         }
 
         setIsLoading(true);
-        try {
-            const response = await axios.post(`${SERVER_URL}/api/members/login`, formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            alert("로그인 성공");
-            window.location.href=`/`;
-        } catch (error) {
-            console.error('Error:', error);
-            alert('로그인 실패');
-        } finally {
-            setIsLoading(false);
-        }
+
+        axios.post(`${SERVER_URL}/api/members/login`, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+            })
+            .then((response) => {
+                const token = response.data.token;
+                localStorage.setItem("token", token);
+
+                alert("로그인 성공");
+                window.location.href=`/`;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('로그인 실패');
+            })
+            .finally(
+                () => setIsLoading(false),
+            )
     };
 
     return (
