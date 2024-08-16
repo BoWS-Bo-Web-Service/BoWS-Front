@@ -6,7 +6,7 @@ import {SERVER_URL} from "../constants/network.js";
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        userId: '',
         password: ''
     });
     const [errors, setErrors] = useState({});
@@ -59,13 +59,13 @@ const LoginForm = () => {
                 <div className="mb-4">
                     <input
                         type="text"
-                        name="username"
+                        name="userId"
                         placeholder="아이디"
-                        value={formData.username}
+                        value={formData.userId}
                         onChange={handleChange}
-                        className={`w-full px-3 py-2 border ${errors.username ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
+                        className={`w-full px-3 py-2 border ${errors.userId ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-1 focus:ring-black transition duration-150 ease-in-out`}
                     />
-                    {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+                    {errors.userId && <p className="text-red-500 text-sm mt-1">{errors.userId}</p>}
                 </div>
                 <div className="mb-6">
                     <input

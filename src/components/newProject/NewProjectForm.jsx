@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import {Link, useRouteLoaderData} from "react-router-dom";
 import { SERVER_URL } from '../../constants/network.js'
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 import FormValidator from "../../utils/formValidator.js";
@@ -21,6 +21,7 @@ const NewProjectForm = ()=> {
         dbStorageSize: 1
     });
     const [file, setFile] = useState(null);
+    const { token } = useRouteLoaderData('root');
 
     const fieldLabels = {
         projectName: '프로젝트 이름 (영어 소문자, 숫자, - . _만 사용 가능합니다)',
@@ -76,7 +77,8 @@ const NewProjectForm = ()=> {
 
             const response = await axios.post(`${SERVER_URL}/api/projects`, formDataToSend, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
                 }
             });
             alert("프로젝트 생성 성공");

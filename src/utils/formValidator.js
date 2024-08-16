@@ -4,8 +4,8 @@ const FormValidator = {
 
         switch (formType) {
             case 'login':
-                if (!formData.username || formData.username.trim().length === 0) {
-                    errors.username = "아이디는 필수입니다.";
+                if (!formData.userId || formData.userId.trim().length === 0) {
+                    errors.userId = "아이디는 필수입니다.";
                 }
                 if (!formData.password || formData.password.trim().length === 0) {
                     errors.password = "비밀번호는 필수입니다.";
@@ -13,12 +13,12 @@ const FormValidator = {
                 break;
 
             case 'register':
-                if (!formData.username || formData.username.trim().length === 0) {
-                    errors.username = "아이디는 필수입니다.";
-                } else if (formData.username.length < 3) {
-                    errors.username = "아이디는 최소 3자 이상이어야 합니다.";
-                } else if (formData.username.length > 20) {
-                    errors.username = "아이디는 20자를 초과할 수 없습니다.";
+                if (!formData.userId || formData.userId.trim().length === 0) {
+                    errors.userId = "아이디는 필수입니다.";
+                } else if (formData.userId.length < 3) {
+                    errors.userId = "아이디는 최소 3자 이상이어야 합니다.";
+                } else if (formData.userId.length > 20) {
+                    errors.userId = "아이디는 20자를 초과할 수 없습니다.";
                 }
 
                 if (!formData.password || formData.password.trim().length === 0) {

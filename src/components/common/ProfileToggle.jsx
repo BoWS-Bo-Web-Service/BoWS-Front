@@ -6,7 +6,6 @@ import {logoutAction} from "../../utils/auth.js";
 const ProfileToggle = () => {
     const [isOpen, setIsOpen] = useState(false);
     const handleLogout = () => {
-        console.log('logout');
         logoutAction();
     }
 
