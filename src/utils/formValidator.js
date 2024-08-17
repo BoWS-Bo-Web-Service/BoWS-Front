@@ -21,6 +21,14 @@ const FormValidator = {
                     errors.userId = "아이디는 20자를 초과할 수 없습니다.";
                 }
 
+                if (!formData.name || formData.name.trim().length === 0) {
+                    errors.name = "이름은 필수입니다.";
+                } else if (formData.name.length > 10) {
+                    errors.name = "이름은 10자를 초과할 수 없습니다.";
+                } else if (!/^[a-zA-Z가-힣]+$/.test(formData.name)) {
+                    errors.name = "이름은 한글 또는 영문만 가능합니다.";
+                }
+
                 if (!formData.password || formData.password.trim().length === 0) {
                     errors.password = "비밀번호는 필수입니다.";
                 } else if (formData.password.length < 5) {

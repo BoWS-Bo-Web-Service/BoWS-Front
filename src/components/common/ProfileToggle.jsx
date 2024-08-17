@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { LogOut } from 'lucide-react';
 import User_icon from '../../assets/user_icon.svg'
-import {logoutAction} from "../../utils/auth.js";
+import { useNavigate } from "react-router-dom";
 
 const ProfileToggle = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        logoutAction();
+        localStorage.removeItem('token');
+        navigate("/login");
     }
 
     const toggleMenu = () => setIsOpen(!isOpen);
