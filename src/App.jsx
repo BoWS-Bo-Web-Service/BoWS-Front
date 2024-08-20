@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, createBrowserRouter, RouterProvider, redirect} from "react-router-dom";
+import {createBrowserRouter, RouterProvider, redirect} from "react-router-dom";
 import Main from "./routes/Main.jsx";
 import NewProject from "./routes/NewProject.jsx";
 import ProjectDetail from "./routes/ProjectDetail.jsx";
@@ -48,21 +48,5 @@ const router = createBrowserRouter([
 function App() {
     return <RouterProvider router={router} />;
 }
-
-// function App() {
-//     return (
-//         <div className="w-screen bg-white flex justify-center">
-//             <BrowserRouter>
-//                 <Routes>
-//                     <Route path="/login" element={<Login />} />
-//                     <Route path="/register" element={<Register />} />
-//                     <Route path="/" element={<Main />} />
-//                     <Route path="/projects" element={<NewProject />} />
-//                     <Route path="/projects/:projectId" element={<ProjectDetail />} />
-//                 </Routes>
-//             </BrowserRouter>
-//         </div>
-//     );
-// }
 
 export default App;
