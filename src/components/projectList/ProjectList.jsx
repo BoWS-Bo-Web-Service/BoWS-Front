@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import ProjectItem from './ProjectItem.jsx';
 import axios from "axios";
 import {SERVER_URL} from '../../constants/network.js'
+import {useRouteLoaderData} from "react-router-dom";
 
 const ProjectList = () => {
-
+    const { token } = useRouteLoaderData('root');
     const [projects, setProjects] = useState([]);
     const numOfProjects = projects.length;
 
@@ -12,7 +13,8 @@ const ProjectList = () => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/projects`, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             setProjects(response.data);

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ServiceItem from "./ServiceItem.jsx";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useParams, useRouteLoaderData} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faGlobe, faRedo} from "@fortawesome/free-solid-svg-icons";
 import {calculateAge} from "../../utils/dateUtils.js";
@@ -11,6 +11,7 @@ const ServiceList = () => {
 
     const params = useParams();
     const projectId = params.projectId;
+    const { token } = useRouteLoaderData('root');
     const [projectDetail, setProjectDetail] = useState({});
     const [serviceMetadata, setServiceMetadata] = useState([]);
     const projectAge = calculateAge(projectDetail.projectCreatedTime);
@@ -19,7 +20,8 @@ const ServiceList = () => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/projects/${projectId}`, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 }
             });
             setProjectDetail(response.data);
