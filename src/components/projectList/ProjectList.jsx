@@ -3,11 +3,13 @@ import ProjectItem from './ProjectItem.jsx';
 import axios from "axios";
 import {SERVER_URL} from '../../constants/network.js'
 import {useRouteLoaderData} from "react-router-dom";
+import {useAsyncError} from "../../hooks/useAsyncError.js";
 
 const ProjectList = () => {
     const { token } = useRouteLoaderData('root');
     const [projects, setProjects] = useState([]);
     const numOfProjects = projects.length;
+    const throwAsyncError = useAsyncError();
 
     const fetchProjects = async () => {
         try {
@@ -19,7 +21,7 @@ const ProjectList = () => {
             });
             setProjects(response.data);
         } catch (error) {
-            console.log(error.message);
+            throwAsyncError(error);
         }
     };
 
