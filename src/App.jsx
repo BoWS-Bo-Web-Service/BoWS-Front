@@ -1,11 +1,12 @@
-import {createBrowserRouter, RouterProvider, redirect} from "react-router-dom";
+import {createBrowserRouter, RouterProvider, redirect, Outlet} from "react-router-dom";
 import Main from "./routes/Main.jsx";
 import NewProject from "./routes/NewProject.jsx";
 import ProjectDetail from "./routes/ProjectDetail.jsx";
 import Login from "./routes/Login.jsx";
 import Register from "./routes/Register.jsx";
 import RootLayout from "./RootLayout.jsx";
-import ErrorPage from "./components/common/Errorpage.jsx";
+import RouterErrorBoundary from "./components/common/RouterErrorBoundary.jsx";
+import RootErrorBoundary from "./components/common/RootErrorBoundary.jsx";
 
 const tokenLoader = () => {
     const token = localStorage.getItem('token');
@@ -20,27 +21,42 @@ const protectedLoader = () => {
     return null;
 };
 
+const ProtectedRoutes = () => {
+    return <Outlet />;
+};
+
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout />,
         id: 'root',
         loader: tokenLoader,
-        errorElement: <ErrorPage />,
+        errorElement: <RootErrorBoundary />,
         children: [
-            { index: true, element: <Main /> },
-            { path: 'login', element: <Login /> },
-            { path: 'register', element: <Register /> },
             {
-                path: 'projects',
-                element: <NewProject />,
-                loader: protectedLoader
+                path: 'login',
+                element: <Login />
             },
             {
-                path: 'projects/:projectId',
-                element: <ProjectDetail />,
-                loader: protectedLoader
+                path: 'register',
+                element: <Register />
             },
+            {
+                element: <ProtectedRoutes />,
+                loader: protectedLoader,
+                errorElement: <RouterErrorBoundary />,
+                children: [
+                    { index: true, element: <Main /> },
+                    {
+                        path: 'projects',
+                        element: <NewProject />
+                    },
+                    {
+                        path: 'projects/:projectId',
+                        element: <ProjectDetail />
+                    },
+                ]
+            }
         ],
     },
 ]);

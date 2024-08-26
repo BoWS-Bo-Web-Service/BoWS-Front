@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ServiceItem from "./ServiceItem.jsx";
 import axios from "axios";
 import {useParams, useRouteLoaderData} from "react-router-dom";
@@ -6,17 +6,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faGlobe, faRedo} from "@fortawesome/free-solid-svg-icons";
 import {calculateAge} from "../../utils/dateUtils.js";
 import {SERVER_URL} from '../../constants/network.js'
+import {useAsyncError} from "../../hooks/useAsyncError.js";
 
 const ServiceList = () => {
-
-    const params = useParams();
-    const projectId = params.projectId;
+    const { projectId } = useParams();
     const { token } = useRouteLoaderData('root');
     const [projectDetail, setProjectDetail] = useState({});
     const [serviceMetadata, setServiceMetadata] = useState([]);
     const projectAge = calculateAge(projectDetail.projectCreatedTime);
+    const throwAsyncError = useAsyncError();
 
-    const fetchServices = async () => {
+    const fetchServices = useCallback(async () => {
         try {
             const response = await axios.get(`${SERVER_URL}/api/projects/${projectId}`, {
                 headers: {
@@ -28,13 +28,13 @@ const ServiceList = () => {
             setServiceMetadata(response.data.serviceMetadata);
             console.log(response.data.serviceMetadata);
         } catch (error) {
-            console.log(error.message);
+            throwAsyncError(error);
         }
-    }
+    }, [projectId, token, throwAsyncError]);
 
     useEffect(() => {
         fetchServices();
-    }, []);
+    }, [fetchServices]);
 
     const handleRefresh = () => {
         window.location.reload();
