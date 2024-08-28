@@ -1,11 +1,12 @@
 import React from 'react';
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { useRouteError } from "react-router-dom";
 import ErrorPage from './ErrorPage';
 
 const RouterErrorBoundary = () => {
     const error = useRouteError();
+    const status = error.response.status;
 
-    return <ErrorPage error={error} />;
+    return <ErrorPage errorStatus={status} />;
 };
 
 export default RouterErrorBoundary;

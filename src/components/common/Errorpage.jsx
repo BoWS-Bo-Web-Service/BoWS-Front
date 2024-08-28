@@ -2,10 +2,10 @@ import Logo from "../../assets/BoWS_logo.svg";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 
-function ErrorPage({ error }) {
+function ErrorPage({ errorStatus }) {
     let title = 'An error occurred!';
     let message = 'Something went wrong.';
-    const status = error.response.status;
+    const status = errorStatus;
     const navigate = useNavigate();
 
     console.log(status);
