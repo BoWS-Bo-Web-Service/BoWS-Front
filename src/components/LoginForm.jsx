@@ -45,8 +45,7 @@ const LoginForm = () => {
                 window.location.href=`/`;
             })
             .catch((error) => {
-                console.error('Error:', error);
-                alert('로그인 실패');
+                alert('아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주세요');
             })
             .finally(
                 () => setIsLoading(false),
