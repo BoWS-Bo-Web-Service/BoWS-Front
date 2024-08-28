@@ -1,11 +1,12 @@
-import { useRouteError } from 'react-router-dom';
 import Logo from "../../assets/BoWS_logo.svg";
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 function ErrorPage({ error }) {
     let title = 'An error occurred!';
     let message = 'Something went wrong.';
     const status = error.response.status;
+    const navigate = useNavigate();
 
     console.log(status);
 
@@ -30,10 +31,24 @@ function ErrorPage({ error }) {
         <div className="flex flex-col items-center h-screen justify-center gap-10">
             <div className="flex flex-col flex-grow-[3] text-3xl justify-end gap-10">
                 <img className="h-[100px] mx-auto" alt="Service Logo" src={Logo}/>
-                <h1>{title}</h1>
+                <h2 className="text-center">{title}</h2>
             </div>
-            <div className="flex flex-grow-[3] text-xl items-start">
+            <div className="flex flex-col flex-grow-[3] gap-10 text-xl items-center">
                 <p>{message}</p>
+                <div className="flex gap-10">
+                    <button
+                        className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
+                        onClick={() => navigate("/")}
+                    >
+                        홈 화면으로 가기
+                    </button>
+                    <button
+                        className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
+                        onClick={() => navigate("/login")}
+                    >
+                        로그인 페이지로 가기
+                    </button>
+                </div>
             </div>
             <div className="flex flex-grow-[1]"></div>
         </div>
