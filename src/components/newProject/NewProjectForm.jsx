@@ -5,6 +5,7 @@ import { SERVER_URL } from '../../constants/network.js'
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 import FormValidator from "../../utils/formValidator.js";
 import FileUploader from './FileUploader';
+import Notice from "./Notice.jsx";
 
 const NewProjectForm = ()=> {
     const [isLoading, setIsLoading] = useState(false);
@@ -28,12 +29,25 @@ const NewProjectForm = ()=> {
         domain: '도메인 (도메인 등록 후 적어주세요)',
         backendImageName: 'BE 컨테이너 이미지 이름',
         frontendImageName: 'FE 컨테이너 이미지 이름',
-        dbPassword: '데이터베이스 비밀번호',
-        dbEndpoint: '데이터베이스 엔드포인트',
-        dbUserName: '데이터베이스 사용자 이름',
-        dbUserPassword: '데이터베이스 사용자 비밀번호',
+        dbPassword: 'DB 루트 비밀번호',
+        dbEndpoint: 'DB 이름 (${MYSQL_DATABASE} 위치에 맵핑됩니다)',
+        dbUserName: 'DB 사용자 이름 (${MYSQL_USER} 위치에 맵핑됩니다)',
+        dbUserPassword: 'DB 사용자 비밀번호 (${MYSQL_PASSWORD} 위치에 맵핑됩니다)',
         dbStorageSize: 'DB 스토리지 크기 (1-3GB, 숫자만 적어주세요)'
     };
+
+    const noticeItems = [
+        "도메인에 ip 등록을 한 후 입력해주세요 (ip는 관리자에게 문의해주세요)",
+        "DB와 백엔드 애플리케이션의 정확한 연결을 위해 DB 관련 config는 아래 예시를 따라주세요",
+        "mysql과 포트번호(3306)는 고정입니다",
+        "백엔드 프레임워크 혹은 파일 형태(properties나 yaml 등)는 상관없습니다",
+    ];
+
+    const configExamples = [
+        `spring.datasource.url=jdbc:mysql://\${MYSQL_HOST}:3306/\${MYSQL_DATABASE}`,
+        `spring.datasource.username=\${MYSQL_USER}`,
+        `spring.datasource.password=\${MYSQL_PASSWORD}`
+    ];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -110,6 +124,9 @@ const NewProjectForm = ()=> {
     return (
         <div className="flex flex-col w-full h-[60%]">
             <LoadingSpinner loading={isLoading} message={"프로젝트 빌드 중..."} />
+            <Notice noticeTitle="주의사항"
+                    noticeItems={noticeItems}
+                    configExamples={configExamples}/>
             <form className="items-center flex-1 justify-center" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-2">
                     {Object.keys(formData).map((key) => (
