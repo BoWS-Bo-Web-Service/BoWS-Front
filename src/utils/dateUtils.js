@@ -1,6 +1,8 @@
 export function calculateAge(dateString) {
     const inputDate = new Date(dateString);
-    const currentDate = new Date();
+    const now = new Date();
+    const kstOffset = 9 * 60 * 60 * 1000; // KST는 UTC+9
+    const currentDate = new Date(now.getTime() + kstOffset);
 
     // 계산된 시간 차이 (밀리초 단위)
     const timeDifference = currentDate - inputDate;
