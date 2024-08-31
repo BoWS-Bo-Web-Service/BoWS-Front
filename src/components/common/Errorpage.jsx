@@ -19,6 +19,7 @@ function ErrorPage({ errorStatus }) {
     } else if (status === 401) {
         title = '401 - 권한이 없습니다!';
         message = '이 페이지에 접근할 권한이 없습니다. 로그인이 필요할 수 있습니다.';
+        navigate("/login");
     } else if (status === 500) {
         title = '500 - 서버 오류!';
         message = '서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.';
