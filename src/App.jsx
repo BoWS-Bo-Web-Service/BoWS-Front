@@ -9,13 +9,14 @@ import RouterErrorBoundary from "./components/common/RouterErrorBoundary.jsx";
 import RootErrorBoundary from "./components/common/RootErrorBoundary.jsx";
 
 const tokenLoader = () => {
-    const token = localStorage.getItem('token');
-    return { token };
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    return { accessToken, refreshToken };
 };
 
 const protectedLoader = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
         return redirect('/login');
     }
     return null;
