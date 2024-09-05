@@ -22,7 +22,7 @@ const NewProjectForm = ()=> {
         dbStorageSize: 1
     });
     const [file, setFile] = useState(null);
-    const { token } = useRouteLoaderData('root');
+    const { accessToken } = useRouteLoaderData('root');
 
     const fieldLabels = {
         projectName: '프로젝트 이름 (영어 소문자, 숫자, - . _만 사용 가능합니다)',
@@ -92,7 +92,7 @@ const NewProjectForm = ()=> {
             const response = await axios.post(`${SERVER_URL}/api/projects`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${accessToken}`,
                 }
             });
             alert("프로젝트 생성 성공");

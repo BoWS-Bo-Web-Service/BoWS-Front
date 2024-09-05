@@ -10,7 +10,7 @@ import {useAsyncError} from "../../hooks/useAsyncError.js";
 
 const ServiceList = () => {
     const { projectId } = useParams();
-    const { token } = useRouteLoaderData('root');
+    const { accessToken } = useRouteLoaderData('root');
     const [projectDetail, setProjectDetail] = useState({});
     const [serviceMetadata, setServiceMetadata] = useState([]);
     const projectAge = calculateAge(projectDetail.projectCreatedTime);
@@ -21,7 +21,7 @@ const ServiceList = () => {
             const response = await axios.get(`${SERVER_URL}/api/projects/${projectId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${accessToken}`,
                 }
             });
             setProjectDetail(response.data);
@@ -30,7 +30,7 @@ const ServiceList = () => {
         } catch (error) {
             throwAsyncError(error);
         }
-    }, [projectId, token, throwAsyncError]);
+    }, [projectId, accessToken, throwAsyncError]);
 
     useEffect(() => {
         fetchServices();

@@ -6,7 +6,7 @@ import {useRouteLoaderData} from "react-router-dom";
 import {useAsyncError} from "../../hooks/useAsyncError.js";
 
 const ProjectList = () => {
-    const { token } = useRouteLoaderData('root');
+    const { accessToken } = useRouteLoaderData('root');
     const [projects, setProjects] = useState([]);
     const numOfProjects = projects.length;
     const throwAsyncError = useAsyncError();
@@ -16,7 +16,7 @@ const ProjectList = () => {
             const response = await axios.get(`${SERVER_URL}/api/projects`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${accessToken}`
                 }
             });
             setProjects(response.data);

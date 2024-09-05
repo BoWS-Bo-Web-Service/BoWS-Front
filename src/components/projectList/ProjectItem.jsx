@@ -10,7 +10,7 @@ import {SERVER_URL} from '../../constants/network.js'
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 
 const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTime }) => {
-    const { token } = useRouteLoaderData('root');
+    const { accessToken } = useRouteLoaderData('root');
     const projectAge = calculateAge(projectCreatedTime);
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
@@ -23,7 +23,7 @@ const ProjectItem = ({ isLast, projectId, projectName, domain, projectCreatedTim
             const response = await axios.delete(`${SERVER_URL}/api/projects/${projectId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${accessToken}`,
                 }
             });
             alert("프로젝트가 삭제되었습니다");
