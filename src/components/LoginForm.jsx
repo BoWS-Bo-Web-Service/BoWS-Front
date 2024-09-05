@@ -38,8 +38,10 @@ const LoginForm = () => {
             }
             })
             .then((response) => {
-                const token = response.data.token;
-                localStorage.setItem("token", token);
+                const accessToken = response.data.accessToken;
+                const refreshToken = response.data.refreshToken;
+                localStorage.setItem("accessToken", accessToken);
+                localStorage.setItem("refreshToken", refreshToken);
 
                 alert("로그인 성공");
                 window.location.href=`/`;
