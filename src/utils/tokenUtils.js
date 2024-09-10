@@ -9,7 +9,12 @@ export const isTokenError = (error) => {
 export const refreshToken = async () => {
     try {
         const refreshToken = localStorage.getItem('refreshToken');
-        const response = await axios.post(`${SERVER_URL}/api/token/refresh`, { refreshToken });
+        const response = await axios.post(`${SERVER_URL}/api/token/refresh`,  { refreshToken }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${refreshToken}`,
+            }
+        });
         const { accessToken } = response.data;
         localStorage.setItem('accessToken', accessToken);
         return true;
