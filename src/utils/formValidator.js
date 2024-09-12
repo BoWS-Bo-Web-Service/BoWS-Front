@@ -69,10 +69,22 @@ const FormValidator = {
                     errors.backendImageName = "BE 컨테이너 이미지 이름은 30자를 초과할 수 없습니다.";
                 }
 
+                if (!formData.backendImageTag.trim()) {
+                    errors.backendImageTag = "BE 컨테이너 태크는 필수입니다.";
+                } else if (formData.backendImageTag.length > 128) {
+                    errors.backendImageTag = "태그는 128자를 초과할 수 없습니다.";
+                }
+
                 if (!formData.frontendImageName.trim()) {
                     errors.frontendImageName = "FE 컨테이너 이미지 이름은 필수입니다.";
                 } else if (formData.frontendImageName.length > 30) {
                     errors.frontendImageName = "FE 컨테이너 이미지 이름은 30자를 초과할 수 없습니다.";
+                }
+
+                if (!formData.frontendImageTag.trim()) {
+                    errors.frontendImageTag = "FE 컨테이너 태크는 필수입니다.";
+                } else if (formData.frontendImageTag.length > 128) {
+                    errors.frontendImageTag = "태그는 128자를 초과할 수 없습니다.";
                 }
 
                 const dbEnvFields = ['dbPassword', 'dbEndpoint', 'dbUserName', 'dbUserPassword'];
